@@ -75,9 +75,9 @@ $query_builder = TRUE;
 
 $db['default'] = array(
 	'dsn'	=> '',
-	'hostname' => 'localhost',
-	'username' => 'u1681554_digitalbaru',
-	'password' => 'sVi!JPa6,&S1',
+	'hostname' => 'mitra-db',
+	'username' => 'root',
+	'password' => '12345678',
 	'database' => 'u1681554_db_gstore',
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',
