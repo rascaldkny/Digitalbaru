@@ -34,6 +34,13 @@
    }
 	}
    </style>
+
+   <script src="<?= base_url() ?>assets/vendors/jquery/jquery.min.js"></script>
+   <script src="<?= base_url() ?>assets/vendors/popper/popper.min.js"></script>
+   <script src="<?= base_url() ?>assets/vendors/bootstrap/js/bootstrap.min.js"></script>
+   <!-- <script src="<?= base_url() ?>assets/vendors/summernote/dist/summernote.min.js"></script> -->
+   <script src="//cdn.ckeditor.com/4.10.0/full-all/ckeditor.js"></script>
+   <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 </head>
 <body>
 
@@ -48,13 +55,6 @@
    <!-- Footer -->
 <?php $this->load->view('layouts/_footer') ?>
 <!-- End of footer -->
-
-   <script src="<?= base_url() ?>assets/vendors/jquery/jquery.min.js"></script>
-	<script src="<?= base_url() ?>assets/vendors/popper/popper.min.js"></script>
-	<script src="<?= base_url() ?>assets/vendors/bootstrap/js/bootstrap.min.js"></script>
-	<!-- <script src="<?= base_url() ?>assets/vendors/summernote/dist/summernote.min.js"></script> -->
-	<script src="//cdn.ckeditor.com/4.10.0/full-all/ckeditor.js"></script>
-	<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 	<script>
         CKEDITOR.replace( 'description-add' );
     </script>

@@ -13,16 +13,26 @@ class Home extends CI_Controller {
 	{
 		$data['title'] 	= 'Home';
 		$data['games']		= $this->home->getAllHome();
+		$data['games_last']	= $this->home->getAllHomeLast();
 		$data['banners']	= $this->home->getAllBanner();
 		$data['page']		= 'pages/home/index';
 		$this->load->view('layouts/app', $data);
 	}
+
 	public function allGames()
 	{
-		$data['title'] 	= 'Home';
+		$data['title'] 	= 'All Games';
 		$data['games']		= $this->home->getAllGame();
 		$data['banners']	= $this->home->getAllBanner();
 		$data['page']		= 'pages/home/allgames';
+		$this->load->view('layouts/app', $data);
+	}
+
+	public function allGamesKategori($title = "")
+	{
+		$data['title'] 		= urldecode($title);
+		$data['games']		= $this->home->getGameKageori(urldecode($title));
+		$data['page']		= 'pages/home/kategorigames';
 		$this->load->view('layouts/app', $data);
 	}
 

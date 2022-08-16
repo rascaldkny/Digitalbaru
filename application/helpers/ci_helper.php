@@ -74,3 +74,17 @@ if(!function_exists('print_rr')){
 	}
 }
 
+if(!function_exists('grouping_array_by_value')) {
+	function grouping_array_by_value($array = array(), $key_arr = "") {
+		$output = array();
+		if(count($array) > 0) {
+			foreach($array as $key => $subarr) {
+				if (!isset($output[$subarr[$key_arr]])) {
+					$output[$subarr[$key_arr]] = array();
+				}
+				$output[$subarr[$key_arr]][$key] = $subarr;
+			}
+		}
+		return $output;
+	}
+}

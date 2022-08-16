@@ -51,6 +51,7 @@
 								<a class="dropdown-item" href="<?= base_url('bank') ?>">Bank</a>
 							<a class="dropdown-item" href="<?= base_url('banner') ?>">Banner</a>
 								<a class="dropdown-item" href="<?= base_url('product') ?>">Product</a>
+								<a class="dropdown-item" href="<?= base_url('product_uniplay') ?>">Product Sync Uniplay</a>
 								<a class="dropdown-item" href="<?= base_url('order') ?>">Order</a>
 								<a class="dropdown-item" href="<?= base_url('user') ?>">Users</a>
 								<a class="dropdown-item" href="<?= base_url('privasi') ?>">Privasi</a>

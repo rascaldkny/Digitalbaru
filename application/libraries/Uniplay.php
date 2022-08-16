@@ -34,13 +34,14 @@ class Uniplay {
 
 	}
 
-	private function _object_to_array_product($obj_array = array()) {
+	private function _object_to_array_product($obj_array = array(), $kategori = '') {
 		// build array
 		$build_array = array();
 		foreach (json_decode($obj_array) as $key => $value) {
 			if(is_array($value)) {
 				foreach ($value as $key_detail => $value_detail) {
 					$build_array['list_product'][$key_detail] = (array) $value_detail;
+					$build_array['list_product'][$key_detail]['kategori'] = $kategori;
 					foreach ($value_detail->denom as $key_denom => $value_denom) {
 						$build_array['list_product'][$key_detail]['denom'][$key_denom] = (array) $value_denom;
 					}
@@ -94,7 +95,7 @@ class Uniplay {
 
 		$response = $this->ci->http->post($url, $body_json, $headers);
 
-		$data = $this->_object_to_array_product($response);
+		$data = $this->_object_to_array_product($response, "Top Up Game");
 		return $data;
 	}
 
@@ -114,8 +115,8 @@ class Uniplay {
 		$body_json = json_encode($body);
 
 		$response = $this->ci->http->post($url, $body_json, $headers);
-		print_r($response);
-		$data = $this->_object_to_array_product($response);
+		
+		$data = $this->_object_to_array_product($response, "Voucher");
 		return $data;
 	}
 

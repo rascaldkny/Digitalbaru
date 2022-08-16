@@ -35,6 +35,7 @@
 <!-- End of Carousel -->
 
 <!-- List Item -->
+
 <div class="content-home container mt-5 mb-5">
 	<div class="row mt-5 content-header p-3">
 			<h5>Latest releases</h5>
@@ -43,7 +44,7 @@
 			</a>
 	</div>
 	<div class="row mb-5 p-4">
-		<?php foreach($games as $game) : ?>
+	<?php foreach($games_last as $key_game => $game) : ?>
 			<div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 mt-4">
 				<div class="card-game card p-2">
 					<img src="<?= base_url() ?>/images/game/<?= $game['image'] ?>" class="card-img-top card-image-content" alt="<?= $game['name'] ?>">
@@ -55,8 +56,39 @@
 					</div>
 				</div>
 			</div>
-		<?php endforeach; ?>
+	<?php endforeach; ?>
 	</div>
 </div>
+
+<?php foreach($games as $key => $arr_game) : ?>
+<div class="content-home container mt-5 mb-5">
+	<div class="row mt-5 content-header p-3">
+			<h5><?=$key?></h5>
+			<a href="<?= base_url('home/allGamesKategori/' . $key) ?>" class="text-dark my-auto">
+				More...
+			</a>
+	</div>
+	<div class="row mb-5 p-4">
+	<?php foreach($arr_game as $key_game => $game) : ?>
+			<div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 mt-4">
+				<div class="card-game card p-2">
+					<img src="<?= base_url() ?>/images/game/<?= $game['image'] ?>" class="card-img-top card-image-content" alt="<?= $game['name'] ?>">
+					<div class="card-body">
+						<h6 class="card-title font-weight-bold"><?= $game['name'] ?></h6>
+						<?php if ($game['kategori'] == 1) { ?>
+							<h6 class="text-muted"><?= ucfirst($game['edition']) ?></h6>
+							<h3 class="text-right text-warning price mt-4">Rp.<?= number_format($game['price']); ?></h3>
+						<?php } else { ?>
+							<h6 class="text-muted"><?= ucfirst($game['kategori_name']) ?></h6>
+							<h3 class="text-right text-warning price mt-4">&nbsp;</h3>
+						<?php } ?>
+						<a href="<?= base_url('/home/detail/' . $game['id']) ?>" class="btn btn-outline-info btn-sm btn-block mt-3">See More</a>
+					</div>
+				</div>
+			</div>
+	<?php endforeach; ?>
+	</div>
+</div>
+<?php endforeach; ?>
 <!-- End of List Item -->
 

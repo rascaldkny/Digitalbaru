@@ -75,7 +75,7 @@ $query_builder = TRUE;
 
 $db['default'] = array(
 	'dsn'	=> '',
-	'hostname' => 'mitra-db',
+	'hostname' => 'erteerwe-db',
 	'username' => 'root',
 	'password' => '12345678',
 	'database' => 'u1681554_db_gstore',
