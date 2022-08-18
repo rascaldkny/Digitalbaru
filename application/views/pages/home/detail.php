@@ -61,7 +61,7 @@
 								<?php foreach ($game['denom'] as $key => $value) { ?>
 									<h6 class="badge badge-info badge-pill p-2 mt-3 badge-filling" name="rad_denom">
 										<label id="option_<?=$value['id']?>" class="denom" denom_id="<?=$value['id']?>" style="margin-bottom: 0;">
-											<input type="radio" name="denom_id" value="<?=$value['id']?>" <?=$key==0?"checked":""?>> <br> <?=$value['name']?> <br> Rp.<?= number_format($value['price']); ?> <br> &nbsp;
+											<input type="radio" name="denom_id" value="<?=$value['id']?>" <?=$key==0?"checked":""?>> <br> <?=$value['name']?> <br> Rp<?= number_format($value['price'], 0, ', ', '.'); ?> <br> &nbsp;
 										</label>
 									</h6>
 								<?php } ?>
@@ -92,8 +92,8 @@
 	</div>
 	<!-- End of description -->
 	<!-- System requirements -->
+	<?php if($game['requirements'] != "") { ?>
 	<div class="requirements-produk">
-
 
 		<div class="row mt-5 mb-2">
 			<div class="col">
@@ -107,6 +107,8 @@
 			</div>
 		</div>
 	</div>
+	
+	<?php } ?>
 	<!-- End of System requirements -->
 </div>
 <?php if ($game['kategori'] != 1) { ?>

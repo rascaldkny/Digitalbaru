@@ -5,12 +5,24 @@ class Product_model extends CI_Model {
 
 	public function getAllProduct()
 	{
+		$this->db->where('kategori', 1);
 		return $this->db->get('products')->result_array();
 	}
 
-	public function getProduct($id) 
-	{
+	public function getProduct($id) {
 		return $this->db->get_where('products', ['id' => $id])->row_array();
+	}
+
+	public function getProductDenom($id) {
+		return $this->db->get_where('product_denoms', ['product_id' => $id])->result_array();
+	}
+
+	public function CheckProductUniplayPublish($slug) {
+		return $this->db->get_where('products', ['slug_key_uniplay' => $slug])->num_rows() > 0 ? TRUE : FALSE;
+	}
+
+	public function GetProductUniplayPublish($slug) {
+		return $this->db->get_where('products', ['slug_key_uniplay' => $slug])->row_array();
 	}
 
 	public function insertProduct($data) 
@@ -18,9 +30,28 @@ class Product_model extends CI_Model {
 		$this->db->insert('products', $data);
 	}
 
+	public function insertProductUniplay($data) 
+	{
+		$this->db->insert('products', $data);
+		$insert_id = $this->db->insert_id();
+
+   		return  $insert_id;
+	}
+
+	public function insertProductUniplayDenom($data) 
+	{
+		$this->db->insert_batch('product_denoms', $data);
+	}
+
 	public function updateProduct($id, $data) 
 	{
 		$this->db->update('products', $data, ['id' => $id]);
+		return $this->db->affected_rows();
+	}
+
+	public function updateProductDenom($id, $data) 
+	{
+		$this->db->update('product_denoms', $data, ['id' => $id]);
 		return $this->db->affected_rows();
 	}
 

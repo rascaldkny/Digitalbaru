@@ -52,7 +52,6 @@ class Product extends CI_Controller {
 				$upload = $this->product->uploadImage();	
 				$data['image'] = $upload;
 			}
-			// var_dump($data);
 			
 
 			$this->product->insertProduct($data);

@@ -26,7 +26,13 @@ class Home_model extends CI_Model {
 	public function getAllHomeLast()
 	{
 		$this->db->select('
-			*
+			*,
+			(
+				IFNULL((SELECT COUNT(od.id) FROM orders_detail od WHERE od.product_id = products.id),0)
+				+
+				IFNULL((SELECT COUNT(cart.id) FROM cart WHERE cart.product_id = products.id),0)
+			) as count_selling,
+			(SELECT pk.name FROM product_kategories pk WHERE pk.id = products.kategori LIMIT 1) as kategori_name
 		');
 		$this->db->order_by('id','desc');
 		$this->db->limit(4);
