@@ -20,11 +20,30 @@ class Order extends CI_Controller {
 		$data['invoice']= $this->order->getOrders();
 		$data['orders'] = [];
 		foreach($data['invoice'] as $order){
-			$status = $this->detailOrder($order['transaction_id']);
-			$status = json_decode($status,true);
-			$order['status'] = $status['status'];
+			if($order['status_mcpay'] != "SUCCESS") {
+				$status = $this->detailOrder($order['transaction_id']);
+				$status = json_decode($status,true);
+				$order['status'] = $status['status'];
+
+				if($status['status'] != 'REQUEST') { 
+					$statusmcpay['status_mcpay'] = $status['status'];
+					$this->order->updateStatusMCpay($order['id'], $statusmcpay);
+				}
+			} else {
+				$order['status'] = $order['status_mcpay'];
+			}
 			array_push($data['orders'],$order);
 		}
+	
+		$this->load->view('layouts/app', $data);
+	}
+	
+	public function expired()
+	{
+		$data['title']	= 'Orders';
+		$data['page']	= 'pages/order/index';
+		$data['invoice']= $this->order->getOrderExpireds();
+		$data['orders'] = $data['invoice'];
 	
 		$this->load->view('layouts/app', $data);
 	}

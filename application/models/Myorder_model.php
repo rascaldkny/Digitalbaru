@@ -45,6 +45,16 @@ class Myorder_model extends CI_Model {
 	public function updateStatus($id){
 		$this->db->update('orders', ['status' => 'paid'], ['id' => $id]);
 	}
+
+	public function getOrderDetail($id) 
+	{
+		$this->db->select('orders_detail.orders_id, orders_detail.product_id, orders_detail.subtotal, products.name, products.image, products.price');
+		$this->db->from('orders_detail');
+		$this->db->join('orders', 'orders.id = orders_detail.orders_id');
+		$this->db->join('products', 'orders_detail.product_id = products.id');
+		$this->db->where('orders.invoice', $id);
+		return $this->db->get()->result_array();
+	}
 	
 	// public function insertBuktiTransfer($data, $invoice) {
 	// 	$this->db->update('pemesanan', $data, ['invoice' => $invoice]);

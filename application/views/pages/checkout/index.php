@@ -62,7 +62,7 @@
 								<?php foreach($cart as $c) : ?>
 									<tr>
 										<td><?= $c['name'] ?></td>
-										<td>Rp. <?= number_format($c['price'], 2, ',', '.') ?></td>
+										<td>Rp. <?= number_format($c['subtotal'], 2, ',', '.') ?></td>
 									</tr>
 								<?php endforeach; ?>
 							</tbody>

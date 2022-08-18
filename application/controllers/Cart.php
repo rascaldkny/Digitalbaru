@@ -36,15 +36,15 @@ class Cart extends CI_Controller {
 	public function add_voucher() {
 		$product_id = $this->input->post('product_id');
 		$denom_id = $this->input->post('denom_id');
-		$product 	= $this->cart->getProductById($product_id);
+		$denom 	= $this->cart->getDenomById($denom_id);
 
 		$data = [
 			'user_id'  	 => $this->session->userdata('id'),
 			'product_id' => $product_id,
 			'denom_id' => $denom_id,
-			// 'subtotal'   => $product['price']
+			'subtotal'   => $denom['price']
 		];
-	
+		
 		$this->cart->addToCart($data);
 		$this->session->set_flashdata('success', 'Successfully added to your cart.');
 		redirect(base_url('home/detail/' . $product_id));
@@ -52,12 +52,18 @@ class Cart extends CI_Controller {
 	
 	public function add_top_up() {
 		$product_id = $this->input->post('product_id');
-		$product 	= $this->cart->getProductById($product_id);
+		$denom_id = $this->input->post('denom_id');
+		$player_id = $this->input->post('player_id');
+		$server_id = @$this->input->post('server_id');
+		$denom 	= $this->cart->getDenomById($denom_id);
 
 		$data = [
 			'user_id'  	 => $this->session->userdata('id'),
 			'product_id' => $product_id,
-			'subtotal'   => $product['price']
+			'denom_id' => $denom_id,
+			'player_id' => $player_id,
+			'server_id' => $server_id,
+			'subtotal'   => $denom['price']
 		];
 	
 		$this->cart->addToCart($data);

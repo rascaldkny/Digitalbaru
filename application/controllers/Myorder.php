@@ -13,8 +13,7 @@ class Myorder extends CI_Controller {
 		$this->load->model('myorder_model', 'myorder');
 	}
 	
-	public function index()
-	{
+	public function index() {
 		$data['title']	= 'My Order';
 		$data['page']	= 'pages/myorder/index';
 		$data['invoice']= $this->myorder->getMyOrders($this->session->userdata('id'));
@@ -22,7 +21,7 @@ class Myorder extends CI_Controller {
 		foreach($data['invoice'] as $order){
 
 			$status = $this->detailOrder($order['transaction_id']);
-			$status = json_decode($status,true);
+			$status = json_decode($status, true);
 			$order['status'] = $status['status'];
 			// array_merge($order,['wdsd'=> $status['status']]);
 			array_push($data['orders'],$order);
@@ -32,11 +31,11 @@ class Myorder extends CI_Controller {
 		$this->load->view('layouts/app', $data);
 	}
 
-	public function detail($invoice) 
-	{
+	public function detail($invoice) {
 		$data['title']				= 'My Order';
 		$data['page']				= 'pages/myorder/detail';
 		$data['order']				= $this->myorder->getMyOrderDetail($this->session->userdata('id'), $invoice);
+		$data['order_detail'] 		= $this->myorder->getOrderDetail($invoice);
 		$data['detailTransaksi'] = $this->detailOrder($data['order']['transaction_id']);
 		
 		$data['detail'] = json_decode($data['detailTransaksi'],true);
@@ -44,8 +43,7 @@ class Myorder extends CI_Controller {
 		$this->load->view('layouts/app', $data);
 	}
 
-	public function confirm($invoice)
-	{
+	public function confirm($invoice) {
 		$this->form_validation->set_rules('account_name', 'Acoount name', 'required',[
 			'required' => 'Acoount name is required.',
 		]);
@@ -95,11 +93,9 @@ class Myorder extends CI_Controller {
 			$data['order'] = $this->myorder->getMyOrderDetail($this->session->userdata('id'), $invoice);
 			$this->load->view('layouts/app', $data);
 		}
-
 	}
 
-	public function cancel($id)
-	{
+	public function cancel($id) {
 
 		$transactionid = $this->detailTransaksi($id);
 
@@ -115,8 +111,8 @@ class Myorder extends CI_Controller {
 		}
 		dd($cancel);
 	}
-	protected function detailOrder($id)
-	{
+
+	protected function detailOrder($id) {
 		$curl = curl_init();
 
 			curl_setopt_array($curl, array(
@@ -138,17 +134,17 @@ class Myorder extends CI_Controller {
 			curl_close($curl);
 			return $response;
 	}
+
 	protected function detailBank($va){
 		$this->db->select('nama_bank');
 		return $this->db->get_where('va_bank', ['payment_channel' => $va])->row_array();
-		
 	}
-	protected function detailTransaksi($id)
-	{
+
+	protected function detailTransaksi($id) {
 		return $this->db->get_where('orders', ['id' => $id])->row_array();
 	}
-	protected function cancelVa($id)
-	{
+
+	protected function cancelVa($id) {
 		
 		$curl = curl_init();
 
@@ -171,9 +167,6 @@ class Myorder extends CI_Controller {
 		curl_close($curl);
 		return $response;
 	}
-
-	
-
 }
 
 /* End of file Myorder.php */

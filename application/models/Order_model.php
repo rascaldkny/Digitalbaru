@@ -5,6 +5,19 @@ class Order_model extends CI_Model {
 
 	public function getOrders() 
 	{
+		$this->db->where('status_mcpay', "");
+		$this->db->or_where('status_mcpay', "SUCCESS");
+		$this->db->order_by('id', "desc");
+		return $this->db->get('orders')->result_array();
+	}
+
+	public function getOrderExpireds() 
+	{
+		$this->db->select('*, status_mcpay as status');
+		$this->db->where('status_mcpay', "CANCEL");
+		$this->db->or_where('status_mcpay', "FAILED");
+		$this->db->or_where('status_mcpay', "EXPIRED");
+		$this->db->order_by('id', "desc");
 		return $this->db->get('orders')->result_array();
 	}
 
@@ -28,6 +41,11 @@ class Order_model extends CI_Model {
 	}
 
 	public function updateStatus($id, $data)
+	{
+		$this->db->update('orders', $data, ['id' => $id]);
+	}
+
+	public function updateStatusMCpay($id, $data)
 	{
 		$this->db->update('orders', $data, ['id' => $id]);
 	}

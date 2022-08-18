@@ -5,8 +5,7 @@ class Checkout_model extends CI_Model {
 
 	public function getCart($id)
 	{
-		$this->db->select('cart.id, cart.subtotal,
-		products.name, products.image, products.price');
+		$this->db->select('cart.id, cart.subtotal, products.name, products.image, products.price');
 		$this->db->from('cart');
 		$this->db->join('products', 'cart.product_id = products.id');
 		$this->db->where('cart.user_id', $id);
@@ -18,7 +17,7 @@ class Checkout_model extends CI_Model {
 		$this->db->select_sum('subtotal');
 		$this->db->from('cart');
 		$this->db->where('user_id', $id);
-		return $this->db->get()->row()->subtotal;;
+		return $this->db->get()->row()->subtotal;
 	}
 
 	public function insertOrder($data) 

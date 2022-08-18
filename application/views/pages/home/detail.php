@@ -38,21 +38,21 @@
 						$action = "cart/add_top_up";
 					}
 					?>
-					<form action="<?= base_url($action) ?>" method="POST">
+					<form action="<?= base_url($action) ?>" method="POST" id="FormAdd">
 						<div class="text-info font-weight-bold" style="width: 700px;">
 							<?php if (count($game['denom']) > 0) { ?>
 								<?php if (($game['kategori']) == 2) { ?>
 									<div class="form-group" style="margin-left: -12px;">
 										<label for="input" class="col-sm-2 control-label">Player ID :</label>
 										<div class="col-sm-10">
-											<input type="text" name="" id="input" class="form-control" value="" required="required" pattern="" title="">
+											<input type="text" name="player_id" id="input" class="form-control" value="" required title="">
 										</div>
 									</div>
 									<?php if (($game['flag_server_id']) == 1) { ?>
 										<div class="form-group" style="margin-left: -12px;">
 											<label for="input" class="col-sm-2 control-label">Server ID :</label>
 											<div class="col-sm-10">
-												<input type="text" name="" id="input" class="form-control" value="" required="required" pattern="" title="">
+												<input type="text" name="server_id" id="input" class="form-control" value="" required title="">
 											</div>
 										</div>
 									<?php } ?>
@@ -61,7 +61,7 @@
 								<?php foreach ($game['denom'] as $key => $value) { ?>
 									<h6 class="badge badge-info badge-pill p-2 mt-3 badge-filling" name="rad_denom">
 										<label id="option_<?=$value['id']?>" class="denom" denom_id="<?=$value['id']?>" style="margin-bottom: 0;">
-											<input type="radio" name="denom_id" value="<?=$value['id']?>"> <br> <?=$value['name']?> <br> Rp.<?= number_format($value['price']); ?> <br> &nbsp;
+											<input type="radio" name="denom_id" value="<?=$value['id']?>" <?=$key==0?"checked":""?>> <br> <?=$value['name']?> <br> Rp.<?= number_format($value['price']); ?> <br> &nbsp;
 										</label>
 									</h6>
 								<?php } ?>
@@ -109,3 +109,36 @@
 	</div>
 	<!-- End of System requirements -->
 </div>
+<?php if ($game['kategori'] != 1) { ?>
+	<?php if (count($game['denom']) > 0) { ?>
+		<?php if (($game['kategori']) == 2) { ?>
+			<script type="text/javascript">
+				jQuery("#FormAdd").submit(function (evt) {
+
+					if (jQuery("input[Name='player_id']").val() == "") {
+						alert("Field player id is required!");
+						evt.preventDefault();
+						return;
+					}
+					<?php if (($game['flag_server_id']) == 1) { ?>
+						if (jQuery("input[Name='server_id']").val() == "") {
+							alert("Field server id is required!");
+							evt.preventDefault();
+							return;
+						}
+						let confirmAction = confirm("Are you sure to add the game to the cart? make sure the player id and server id entered are correct.");
+						if (!confirmAction) {
+							return false;
+						}
+
+					<?php } else { ?>
+						let confirmAction = confirm("Are you sure to add the game to the cart? make sure the player id entered are correct.");
+						if (!confirmAction) {
+							return false;
+						}
+					<?php } ?>
+				});
+			</script>
+		<?php } ?>
+	<?php } ?>
+	<?php } ?>

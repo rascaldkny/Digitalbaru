@@ -22,12 +22,12 @@ class Product_uniplay extends CI_Controller {
     	$get_dtu = $this->uniplay->inquiry_dtu();
     	$get_voucher = $this->uniplay->inquiry_voucher();
 
-    	if($get_saldo->status !== "200") {
+    	if($get_saldo->status == "200") {
 
 	    	$data['status']		= $get_saldo->status;
 	    	$data['message']	= $get_saldo->message;
-	    	$data['saldo']		= NULL;
-			$data['product']	= array();
+	    	$data['saldo']		= $get_saldo->saldo;
+			$data['product']	= array_merge($get_voucher['list_product'], $get_dtu['list_product']);
 			$data['page']		= 'pages/product_uniplay/index';
 			$this->load->view('layouts/app', $data);
 
@@ -35,8 +35,8 @@ class Product_uniplay extends CI_Controller {
 
 	    	$data['status']		= $get_saldo->status;
 	    	$data['message']	= $get_saldo->message;
-	    	$data['saldo']		= $get_saldo->saldo;
-			$data['product']	= array_merge($get_voucher['list_product'], $get_dtu['list_product']);
+	    	$data['saldo']		= NULL;
+			$data['product']	= array();
 			$data['page']		= 'pages/product_uniplay/index';
 			$this->load->view('layouts/app', $data);
     	}

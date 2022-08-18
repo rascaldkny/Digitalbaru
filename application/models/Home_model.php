@@ -70,7 +70,7 @@ class Home_model extends CI_Model {
 			(SELECT pk.name FROM product_kategories pk WHERE pk.id = products.kategori LIMIT 1) as kategori_name
 		');
 		$result = $this->db->get_where('products', ['id' => $id])->row_array();
-		$result['denom'] = $this->db->get_where('product_denoms', ['product_id' => $result['id']])->result_array();
+		$result['denom'] = $this->db->get_where('product_denoms', ['product_id' => $result['id'], 'price >' => 0])->result_array();
 		return $result;
 	}
 

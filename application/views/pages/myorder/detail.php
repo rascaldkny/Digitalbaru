@@ -1,6 +1,6 @@
 <div class="container">
 	<div class="row justify-content-center mt-4">
-		<div class="col-6">
+		<div class="col-12">
 			<div class="card">
 				<h5 class="card-header text-center"><strong>Orders Detail #<?= $order['invoice'] ?></strong></h5>
 				<div class="card-body">
@@ -27,6 +27,37 @@
 							<?php endif; ?>
 						</li>
 					</ul>
+
+					<table class="table table-bordered text-center">
+						<thead class="thead-dark">
+							<tr>
+								<th>Game</th>
+								<th>Kategori</th>
+								<th>Price</th>
+								<th>Status</th>
+							</tr>
+						</thead>
+						<tbody>
+							<?php foreach($order_detail as $od) : ?>
+								<tr>
+									<td>
+										<img src="<?= base_url('images/game/' . $od['image']) ?>" style="width:200px">
+									</td>
+									<td></td>
+									<td><h5>Rp. <?= number_format($od['price'], 2, ',', '.') ?></h5></td>
+									<td></td>
+								</tr>
+							<?php endforeach ?>
+						</tbody>
+						<tfoot class="bg-success text-light">
+							<tr>
+								<td><strong>Total</strong></td>
+								<td></td>
+								<td><h5><strong>Rp. <?= number_format(array_sum(array_column($order_detail, 'subtotal')), 2, ',', '.') ?></strong></h5></td>
+								<td></td>
+							</tr>
+						</tfoot>
+					</table>
 
 					<hr>
 					<div class="text-center text-info">

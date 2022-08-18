@@ -22,8 +22,7 @@ class Checkout extends CI_Controller {
 		$this->load->view('layouts/app',$data);
 	}
 
-	public function create()
-	{
+	public function create() {
 		$this->form_validation->set_rules('name', 'Name', 'required',[
 			'required' => 'Name is requried.',
 		]);
@@ -52,8 +51,8 @@ class Checkout extends CI_Controller {
 			];
 
 			$detailbank = $this->getDetailBank($this->input->post('payment_channel'));
-			// dd($detailbank);
-			$paymentcode = substr($data['phone'],0,$detailbank['digit']);
+
+			$paymentcode = substr($data['phone'], 0, $detailbank['digit']);
 			
 			$order = [
 				'mrc_id' => $this->mrcId,
@@ -68,29 +67,31 @@ class Checkout extends CI_Controller {
 			];
 			$payment = $this->gateway($order,$detailbank['payment_channel']);
 			$payment = json_decode($payment,true);			
-			if($payment['status_code'] ==201 || $payment['status_code'] ==200){
+			if($payment['status_code'] ==201 || $payment['status_code'] ==200) {
 				$data['transaction_id'] = $payment['transaction_id'];
 				$data['payment_code'] = $payment['payment_code'];
 				$data['bank_id'] = $detailbank['payment_channel'];
 				$data['expired_time'] = $payment['expired_time'];
+
 				// Masukkan data ke table orders
-			if($order = $this->checkout->insertOrder($data)){
-				$cart = $this->checkout->getCartByIdUser($this->session->userdata('id'));
-				foreach($cart as $c) {
-					$c['orders_id'] = $order;
-					unset($c['id'], $c['user_id']);
-					$this->checkout->insertOrdersDetail($c);
+				if($order = $this->checkout->insertOrder($data)) {
+					$cart = $this->checkout->getCartByIdUser($this->session->userdata('id'));
+					foreach($cart as $c) {
+						$c['orders_id'] = $order;
+						unset($c['id'], $c['user_id']);
+						$this->checkout->insertOrdersDetail($c);
+					}
+
+					// Hapus data pada keranjang
+					$this->checkout->deleteCart($this->session->userdata('id'));
+					$this->session->set_flashdata('success', 'Data saved successfully.');
+					$data['title'] 	= 'Checkout Success';
+					$data['content']	= $data;
+					$data['page']		= 'pages/checkout/success';
+					$this->load->view('layouts/app', $data);
 				}
 
-				// Hapus data pada keranjang
-				$this->checkout->deleteCart($this->session->userdata('id'));
-				$this->session->set_flashdata('success', 'Data saved successfully.');
-				$data['title'] 	= 'Checkout Success';
-				$data['content']	= $data;
-				$data['page']		= 'pages/checkout/success';
-				$this->load->view('layouts/app', $data);
-			}
-			}elseif($payment['status_code'] ==400 || $payment['status_code'] ==401){
+			} elseif($payment['status_code'] ==400 || $payment['status_code'] ==401){
 				$data['title']		= 'Checkout';
 				$data['page']		= 'pages/checkout/error';
 				$data['content']		= $payment;
@@ -105,12 +106,13 @@ class Checkout extends CI_Controller {
 			$this->load->view('layouts/app',$data);
 		}
 	}
-	public function gateway($data,$channel){
+
+	public function gateway($data,$channel) {
 		$curl = curl_init();
-	
-			$order = json_encode($data);
+
+		$order = json_encode($data);
 		
-			curl_setopt_array($curl, array(
+		curl_setopt_array($curl, array(
 			CURLOPT_URL => 'https://api.mcpayment.id/va/transactions?payment='.$channel,
 			CURLOPT_RETURNTRANSFER => true,
 			CURLOPT_ENCODING => '',
@@ -124,20 +126,19 @@ class Checkout extends CI_Controller {
 				'x-api-key:'.$this->apiKey,
 				'Content-Type: application/json'
 			),
-			));
+		));
 
-			$response = curl_exec($curl);
+		$response = curl_exec($curl);
 
-			curl_close($curl);
-			return $response;
-				}
+		curl_close($curl);
+		return $response;
+	}
 
-	protected function getBank()
-	{
+	protected function getBank() {
 		return $this->db->get('va_bank')->result_array();
 	}
-	protected function getDetailBank($va)
-	{
+
+	protected function getDetailBank($va) {
 		return $this->db->get_where('va_bank', ['payment_channel' => $va])->row_array();
 	}
 
