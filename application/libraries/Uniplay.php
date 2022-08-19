@@ -155,6 +155,55 @@ class Uniplay {
 		return json_decode($response);
 	}
 
+	public function inquiry_payment_voucher_test($entitas_id = '', $denom_id = '') {
+		// pemesanan produk voucher
+		// voucher game_id, denom_id
+
+		if($entitas_id == '') {
+			return json_decode(json_encode(array("status" => "400", "message" => "Game ID Required")));
+		} 
+
+		if($denom_id == '') {
+			return json_decode(json_encode(array("status" => "400", "message" => "Denom ID Required")));
+		} 
+
+		## Dapatkan Signature ##
+		$timestamp = date("Y-m-d H:i:s");
+		$api_key = "5JLNKF9GXN90WYKKFHIYWH3VWZUDVREC5VWDS5";
+		$json_array = array(
+			"api_key" => $api_key,
+			"timestamp" => $timestamp
+		);
+		$json_string = json_encode($json_array);
+		$hmac_key = $api_key.'|'.$json_string;
+		$upl_signature = hash_hmac('sha512', $json_string, $hmac_key);
+
+		## Dapatkan Akses Token ##
+		$url_access_token = 'https://api-reseller.uniplay.id/v1/access-token';
+		$headers 	= array('UPL-SIGNATURE' => $upl_signature);
+		$body 	= array('api_key' => $api_key, 'timestamp' => $timestamp);
+		$response = $this->ci->http->post($url_access_token, '{"api_key":"'.$api_key.'","timestamp":"'.$timestamp.'"}', $headers);
+		$get_access_token = json_decode($response)->access_token;
+
+		## Order Pemesanan ##
+		$url_order_payement = 'https://api-reseller.uniplay.id/v1/inquiry-payment';
+		$headers = array(
+			'UPL-ACCESS-TOKEN' => $get_access_token, 
+			'UPL-SIGNATURE' => $upl_signature
+		);
+		$body = array(
+			"api_key" => $api_key, 
+			"timestamp" => $timestamp,
+			"entitas_id" => $entitas_id,
+			"denom_id" => $denom_id,
+		);
+
+		$body_json = json_encode($body);
+
+		$response = $this->ci->http->post($url_order_payement, $body_json, $headers);
+		return json_decode($response);
+	}
+
 	public function inquiry_payment_dtu() {
 		// pemesanan produk dtu
 		// dtu game_id, denom_id, user_id, server_id
