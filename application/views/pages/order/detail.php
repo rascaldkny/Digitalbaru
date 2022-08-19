@@ -28,23 +28,64 @@
 						<thead class="thead-dark">
 							<tr>
 								<th>Game</th>
+								<th>Kategori</th>
+								<th>No Voucher</th>
+								<th>Status</th>
 								<th>Price</th>
+								<!-- <th>Action</th> -->
 							</tr>
 						</thead>
 						<tbody>
 							<?php foreach($order_detail as $od) : ?>
+								<?php
+								$get_detail_status_uniplay = $this->order->getOrderDetailUniplay($od['id']);
+								?>
 								<tr>
 									<td>
 										<img src="<?= base_url('images/game/' . $od['image']) ?>" style="width:200px">
 									</td>
-									<td><h5>Rp. <?= number_format($od['price'], 2, ',', '.') ?></h5></td>
+									<td><?=$od['kategori_name']?></td>
+									<td>
+										<?=$get_detail_status_uniplay['code_voucher'] != "" ? $get_detail_status_uniplay['code_voucher'] : "---" ?>
+									</td>
+									<td>
+										<?php
+										if($od['kategori'] != 1) {
+											if($get_detail_status_uniplay['inquiry_id'] != NULL && $get_detail_status_uniplay['order_id'] == NULL) {
+												echo "Transaction is being processed";
+											} else {
+												if($get_detail_status_uniplay['status_uniplay'] == "done" || $get_detail_status_uniplay['status_uniplay'] == "payment_received") {
+													echo "Transaction successful";
+												} else {
+													echo "Transaction failed";
+												}
+											}
+										} else {
+											echo $detailTransaksi['status'];
+										}
+										?>
+									</td>
+									<td><h5>Rp. <?= number_format($od['subtotal'], 2, ',', '.') ?></h5></td>
+									<!-- <td> -->
+										<?php
+										// if($get_detail_status_uniplay['inquiry_id'] != NULL && $get_detail_status_uniplay['order_id'] == NULL) {
+										// 	echo "process manual";
+										// } else {
+										// 	echo "-";
+										// }
+										?>
+									<!-- </td> -->
 								</tr>
 							<?php endforeach ?>
 						</tbody>
 						<tfoot class="bg-success text-light">
 							<tr>
 								<td><strong>Total</strong></td>
+								<td></td>
+								<td></td>
+								<td></td>
 								<td><h5><strong>Rp. <?= number_format(array_sum(array_column($order_detail, 'subtotal')), 2, ',', '.') ?></strong></h5></td>
+								<!-- <td></td> -->
 							</tr>
 						</tfoot>
 					</table>

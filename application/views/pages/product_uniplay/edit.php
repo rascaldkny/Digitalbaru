@@ -20,7 +20,7 @@
 					<div class="form-group row">
 						<label for="name" class="col-sm-2 col-form-label font-weight-bold">Price <?=$value['name']?></label>
 						<div class="col-sm-2">
-							<input type="number" class="form-control" name="price[<?=$value['id']?>]" value="<?= $value['price'] ?>">
+							<input type="number" class="form-control" name="price[<?=$value['id']?>]" value="<?= $value['price'] != NULL ? $value['price'] : $value['price_reseller'] ?>">
 							<?= form_error('price['.$value['id'].']', '<small class="form-text text-danger">', '</small>') ?>
 						</div>
 						<div class="col-sm-5">

@@ -21,6 +21,18 @@ class Order_model extends CI_Model {
 		return $this->db->get('orders')->result_array();
 	}
 
+	public function getOrdersRequest() {
+		$this->db->where('status_mcpay', "");
+		$this->db->order_by('id', "desc");
+		return $this->db->get('orders')->result_array();
+	}
+
+	public function getOrdersSuccess() {
+		$this->db->where('status_mcpay', "SUCCESS");
+		$this->db->order_by('id', "desc");
+		return $this->db->get('orders')->result_array();
+	}
+
 	public function getOrderDetailById($id) 
 	{
 		return $this->db->get_where('orders', ['id' => $id])->row_array();
@@ -28,11 +40,43 @@ class Order_model extends CI_Model {
 
 	public function getOrderDetail($id) 
 	{
-		$this->db->select('orders_detail.orders_id, orders_detail.product_id, orders_detail.subtotal, products.name, products.image, products.price');
+		$this->db->select('
+			orders_detail.*, 
+			products.name, 
+			products.image, 
+			products.price, 
+			products.kategori, 
+			product_kategories.name as kategori_name
+		');
 		$this->db->from('orders_detail');
 		$this->db->join('products', 'orders_detail.product_id = products.id');
+		$this->db->join('product_kategories', 'product_kategories.id = products.kategori');
 		$this->db->where('orders_detail.orders_id', $id);
 		return $this->db->get()->result_array();
+	}
+
+	public function getOrderDetailUniplay($id) 
+	{
+		$this->db->select('*');
+		$this->db->from('orders_detail_uniplay');
+		$this->db->where('orders_detail_uniplay.order_detail_id', $id);
+		return $this->db->get()->row_array();
+	}
+
+	public function getProductUniplayID($id) 
+	{
+		$this->db->select('uniplay_id');
+		$this->db->from('products');
+		$this->db->where('products.id', $id);
+		return $this->db->get()->row()->uniplay_id;
+	}
+
+	public function getDenomUniplayID($id) 
+	{
+		$this->db->select('uniplay_id');
+		$this->db->from('product_denoms');
+		$this->db->where('product_denoms.id', $id);
+		return $this->db->get()->row()->uniplay_id;
 	}
 
 	public function getOrderConfirm($id) 

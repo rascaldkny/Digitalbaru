@@ -49,12 +49,42 @@
 										</div>
 									</div>
 									<?php if (($game['flag_server_id']) == 1) { ?>
-										<div class="form-group" style="margin-left: -12px;">
-											<label for="input" class="col-sm-2 control-label">Server ID :</label>
-											<div class="col-sm-10">
-												<input type="text" name="server_id" id="input" class="form-control" value="" required title="">
+										<?php if (($game['slug_key_uniplay']) == "lifeafter") { ?>
+											<div class="form-group" style="margin-left: -12px;">
+												<label for="input" class="col-sm-2 control-label">Server ID :</label>
+												<div class="col-sm-10">
+													<select name="server_id" class="server_id form-control second-input" required="required">
+														<option value="" selected="selected">Server</option>
+														<option value="500001">MiskaTown (NA)</option>
+														<option value="500002">SandCastle (NA)</option>
+														<option value="500003">MouthSwamp (NA)</option>
+														<option value="500004">RedwoodTown (NA)</option>
+														<option value="500005">Obelisk (NA)</option>
+														<option value="510001">FallForest (AU)</option>
+														<option value="510002">MountSnow (AU)</option>
+														<option value="520001">NancyCity (SEA)</option>
+														<option value="520002">CharlesTown (SEA)</option>
+														<option value="520003">SnowHighlands (SEA)</option>
+														<option value="520004">Santopany (SEA)</option>
+														<option value="520005">LevinCity (SEA)</option>
+														<option value="500006">NewLand (NA)</option>
+														<option value="520006">MileStone (SEA)</option>
+														<option value="500007">ChaosOutpost (NA)</option>
+														<option value="520007">ChaosCity (SEA)</option>
+														<option value="520008">TwinIslands (SEA)</option>
+														<option value="520009">HopeWall (SEA)</option>
+														<option value="500008">IronStride (NA)</option>
+													</select>
+												</div>
 											</div>
-										</div>
+										<?php } else { ?>
+											<div class="form-group" style="margin-left: -12px;">
+												<label for="input" class="col-sm-2 control-label">Server ID :</label>
+												<div class="col-sm-10">
+													<input type="text" name="server_id" id="input" class="form-control" value="" required title="">
+												</div>
+											</div>
+										<?php } ?>
 									<?php } ?>
 								<?php } ?>
 								<!-- Foreach Denom -->

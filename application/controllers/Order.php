@@ -20,18 +20,24 @@ class Order extends CI_Controller {
 		$data['invoice']= $this->order->getOrders();
 		$data['orders'] = [];
 		foreach($data['invoice'] as $order){
-			if($order['status_mcpay'] != "SUCCESS") {
-				$status = $this->detailOrder($order['transaction_id']);
-				$status = json_decode($status,true);
-				$order['status'] = $status['status'];
+			$status = $this->detailOrder($order['transaction_id']);
+			$status = json_decode($status,true);
+			$order['status'] = $status['status'];
 
-				if($status['status'] != 'REQUEST') { 
-					$statusmcpay['status_mcpay'] = $status['status'];
-					$this->order->updateStatusMCpay($order['id'], $statusmcpay);
-				}
-			} else {
-				$order['status'] = $order['status_mcpay'];
-			}
+			// if($order['status_mcpay'] != "SUCCESS") {
+			// 	$status = $this->detailOrder($order['transaction_id']);
+			// 	$status = json_decode($status,true);
+			// 	$order['status'] = $status['status'];
+
+			// 	if($status['status'] != 'REQUEST') { 
+			// 		$statusmcpay['status_mcpay'] = $status['status'];
+			// 		$this->order->updateStatusMCpay($order['id'], $statusmcpay);
+			// 	}
+			// } else {
+			// 	$order['status'] = $order['status_mcpay'];
+			// }
+
+			$order['order_detail'] 	= $this->order->getOrderDetail($order['id']);
 			array_push($data['orders'],$order);
 		}
 	
@@ -43,7 +49,12 @@ class Order extends CI_Controller {
 		$data['title']	= 'Orders';
 		$data['page']	= 'pages/order/index';
 		$data['invoice']= $this->order->getOrderExpireds();
-		$data['orders'] = $data['invoice'];
+		$data['orders'] = [];
+		foreach($data['invoice'] as $order){
+			$order['status'] = $order['status_mcpay'];
+			$order['order_detail'] 	= $this->order->getOrderDetail($order['id']);
+			array_push($data['orders'],$order);
+		}
 	
 		$this->load->view('layouts/app', $data);
 	}

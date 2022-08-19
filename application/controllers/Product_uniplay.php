@@ -81,6 +81,7 @@ class Product_uniplay extends CI_Controller {
 				## Get Uniplay API Where Slug
 				$arr_uniplay_product = searchForSlug($value, $product);
 				if(count($arr_uniplay_product) > 0) {
+					$dataInsert['uniplay_id'] = $arr_uniplay_product['id'];
 					$dataInsert['kategori'] = $arr_uniplay_product['kategori_id'];
 					$dataInsert['name'] = $arr_uniplay_product['name'];
 					$dataInsert['edition'] = $arr_uniplay_product['kategori'];
@@ -90,14 +91,18 @@ class Product_uniplay extends CI_Controller {
 					$dataInsert['description'] = $arr_uniplay_product['publisher'] . " Website : " . $arr_uniplay_product['publisher_website'];
 					$dataInsert['requirements'] = "";
 					$dataInsert['slug_key_uniplay'] = $arr_uniplay_product['slug'];
-					$dataInsert['flag_server_id'] = 0;
-					
+					if($arr_uniplay_product['slug'] == "mobile-legends" || $arr_uniplay_product['slug'] == "one-punch-man-the-strongest" || $arr_uniplay_product['slug'] == "lifeafter") {
+						$dataInsert['flag_server_id'] = 1;
+					} else {
+						$dataInsert['flag_server_id'] = 0;
+					}
 					## Insert product ## Get product_id
 					$product_id = $this->product->insertProductUniplay($dataInsert);
 
 					## Insert denom
 					if(count($arr_uniplay_product['denom']) > 0) {
 						foreach ($arr_uniplay_product['denom'] as $key_denom => $value_denom) {
+							$dataInsertDenom[$key_denom]['uniplay_id'] = $value_denom['id'];
 							$dataInsertDenom[$key_denom]['product_id'] = $product_id;
 							$dataInsertDenom[$key_denom]['name'] = $value_denom['package'];
 							$dataInsertDenom[$key_denom]['price_reseller'] = $value_denom['price'];

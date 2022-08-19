@@ -53,7 +53,10 @@
 							<!-- Total -->
 							<tr class="bg-success text-light">
 								<td colspan="3" class="text-left"><strong>Total:</strong></td>
-								<td><strong>Rp. <?= number_format(array_sum(array_column($product, 'subtotal')), 2, ', ', '.') ?></strong></td>
+								<td>
+									<strong>Rp. <?= number_format(array_sum(array_column($product, 'subtotal')), 2, ', ', '.') ?></strong>
+									<input type="hidden" id="subtotal" value="<?=array_sum(array_column($product, 'subtotal'))?>" />
+								</td>
 							</tr>
 						</tbody>
 					</table>
@@ -66,7 +69,7 @@
 					Back
 				</a>
 				<?php if($product) : ?>
-					<a href="<?= base_url('checkout') ?>" class="btn btn-info btn-sm float-right">
+					<a href="<?= base_url('checkout') ?>" class="btn btn-info btn-sm float-right payment">
 						Pay Now
 						<i class="fas fa-arrow-right ml-1"></i>
 					</a>
@@ -77,3 +80,16 @@
 	</div>
 </div>
 </div>
+
+<script type="text/javascript">
+	$(".payment").click(function(){
+		subtotal = parseInt($("#subtotal").val());
+		if(subtotal <= 10000) {
+			alert("Your total payment is less than a minimum purchase of Rp10.000")
+			return false
+		} else {
+			return true
+		}
+	});
+
+</script>

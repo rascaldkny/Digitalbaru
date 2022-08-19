@@ -168,7 +168,7 @@ class Uniplay {
 		} 
 		
 		$url			= 'https://api-reseller.uniplay.id/v1/confirm-payment';
-		echo $json_string	= json_encode(array(
+		$json_string	= json_encode(array(
 			"api_key" => $this->api_key, 
 			"timestamp" => $this->timestamp, 
 			"inquiry_id" => $inquiry_id, 
@@ -195,96 +195,6 @@ class Uniplay {
 		$headers 		= array('UPL-ACCESS-TOKEN' => $this->get_access_token(), 'UPL-SIGNATURE' => $this->get_signature($json_string));
 		$response = $this->ci->http->post($url, $json_string, $headers);
 		return json_decode($response);
-	}
-
-	public function inquiry_payment_voucher_example($entitas_id = '', $denom_id = '') {
-		// pemesanan produk voucher
-		// voucher game_id, denom_id
-
-		// if($entitas_id == '') {
-		// 	return json_decode(json_encode(array("status" => "400", "message" => "Game ID Required")));
-		// } 
-
-		// if($denom_id == '') {
-		// 	return json_decode(json_encode(array("status" => "400", "message" => "Denom ID Required")));
-		// } 
-
-		## Get Signature
-			$timestamp = date("Y-m-d H:i:s");
-			$api_key = "5JLNKF9GXN90WYKKFHIYWH3VWZUDVREC5VWDS5";	
-
-		## Get Akses Token For List Vocher
-			$body1_json 	= json_encode(array('api_key' => $api_key, 'timestamp' => $timestamp));
-			$hmac_key = $api_key.'|'.$body1_json;
-			$upl_signature = hash_hmac('sha512', $body1_json, $hmac_key);
-			$curl = curl_init();
-			curl_setopt_array($curl, array(
-				CURLOPT_URL => 'https://api-reseller.uniplay.id/v1/access-token',
-				CURLOPT_RETURNTRANSFER => true, CURLOPT_ENCODING => '', CURLOPT_MAXREDIRS => 10, CURLOPT_TIMEOUT => 0, CURLOPT_FOLLOWLOCATION => true, CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1, CURLOPT_CUSTOMREQUEST => 'POST', CURLOPT_SSL_VERIFYPEER => 0,
-				CURLOPT_POSTFIELDS => $body1_json,
-				CURLOPT_HTTPHEADER => array(
-					'UPL-SIGNATURE: '.$upl_signature.'',
-					'Content-Type: application/json'
-				),
-			));
-			$response1 = curl_exec($curl);
-			curl_close($curl);
-			$access_token = json_decode($response1)->access_token;
-
-			$body2_json = json_encode(array("api_key" => $api_key, "timestamp" => $timestamp));
-			$hmac_key = $api_key.'|'.$body2_json;
-			$upl_signature = hash_hmac('sha512', $body2_json, $hmac_key);
-			$curl = curl_init();
-			curl_setopt_array($curl, array(
-				CURLOPT_URL => 'https://api-reseller.uniplay.id/v1/inquiry-voucher',
-				CURLOPT_RETURNTRANSFER => true, CURLOPT_ENCODING => '', CURLOPT_MAXREDIRS => 10, CURLOPT_TIMEOUT => 0, CURLOPT_FOLLOWLOCATION => true, CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1, CURLOPT_CUSTOMREQUEST => 'POST', CURLOPT_SSL_VERIFYPEER => 0, 
-				CURLOPT_POSTFIELDS => $body2_json,
-				CURLOPT_HTTPHEADER => array(
-					'UPL-ACCESS-TOKEN: '.$access_token.'',
-					'UPL-SIGNATURE: '.$upl_signature.''
-				),
-			));
-			$response2 = curl_exec($curl);
-			curl_close($curl);
-
-		## Get Akses Token For Inquiry Payment
-			$body1_json 	= json_encode(array('api_key' => $api_key, 'timestamp' => $timestamp));
-			$hmac_key = $api_key.'|'.$body1_json;
-			$upl_signature = hash_hmac('sha512', $body1_json, $hmac_key);
-			$curl = curl_init();
-			curl_setopt_array($curl, array(
-				CURLOPT_URL => 'https://api-reseller.uniplay.id/v1/access-token',
-				CURLOPT_RETURNTRANSFER => true, CURLOPT_ENCODING => '', CURLOPT_MAXREDIRS => 10, CURLOPT_TIMEOUT => 0, CURLOPT_FOLLOWLOCATION => true, CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1, CURLOPT_CUSTOMREQUEST => 'POST', CURLOPT_SSL_VERIFYPEER => 0,
-				CURLOPT_POSTFIELDS => $body1_json,
-				CURLOPT_HTTPHEADER => array(
-					'UPL-SIGNATURE: '.$upl_signature.'',
-					'Content-Type: application/json'
-				),
-			));
-			$response1 = curl_exec($curl);
-			curl_close($curl);
-			$access_token = json_decode($response1)->access_token;
-
-			$body3_json = json_encode(array("api_key" => $api_key, "timestamp" => $timestamp, "entitas_id" => json_decode($response2)->list_voucher[0]->id, "denom_id" => json_decode($response2)->list_voucher[0]->denom[0]->id));
-			$hmac_key = $api_key.'|'.$body3_json;
-			$upl_signature = hash_hmac('sha512', $body3_json, $hmac_key);
-			$curl = curl_init();
-			curl_setopt_array($curl, array(
-			CURLOPT_URL => 'https://api-reseller.uniplay.id/v1/inquiry-payment',
-			CURLOPT_RETURNTRANSFER => true, CURLOPT_ENCODING => '', CURLOPT_MAXREDIRS => 10, CURLOPT_TIMEOUT => 0, CURLOPT_FOLLOWLOCATION => true, CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1, CURLOPT_CUSTOMREQUEST => 'POST', CURLOPT_SSL_VERIFYPEER => 0,
-				CURLOPT_POSTFIELDS => $body3_json,
-				CURLOPT_HTTPHEADER => array(
-					'UPL-ACCESS-TOKEN: '.$access_token.'',
-					'UPL-SIGNATURE: '.$upl_signature.''
-				),
-			));
-
-			$response = curl_exec($curl);
-			curl_close($curl);
-
-		print_r($response);
-
-		// return json_decode($response);
 	}
 
 }

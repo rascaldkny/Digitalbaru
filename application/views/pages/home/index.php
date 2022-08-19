@@ -14,12 +14,6 @@
 				<img src="<?= base_url() ?>images/banner/<?= $b['image'] ?>" class="img-fluid carousel-image">
 			</a>
 			<?php endif;?>
-		
-				<!-- <div class="carousel-caption d-none d-md-block  <?= $b['text_color'] ?>">
-					<h3 class="text-uppercase"><?= $b['head'] ?></h3>
-					<h5 class="mt-3"> <?= $b['content'] ?></h5>
-					<a href="<?= base_url('home/detail/' . $b['product_id']) ?>" class="btn btn-success badge-pill mt-3" style="width:200px">ORDER NOW</a>
-				</div> -->
 			</div>
 		<?php endforeach ?> 
 	</div>
@@ -50,7 +44,6 @@
 					<img src="<?= base_url() ?>/images/game/<?= $game['image'] ?>" class="card-img-top card-image-content" alt="<?= $game['name'] ?>">
 					<div class="card-body">
 						<h6 class="card-title font-weight-bold"><?= $game['name'] ?></h6>
-						<h6 class="text-muted"><?= ucfirst($game['edition']) ?></h6>
 						<?php if ($game['kategori'] == 1) { ?>
 							<h6 class="text-muted"><?= ucfirst($game['edition']) ?></h6>
 							<h3 class="text-right text-warning price mt-4">Rp.<?= number_format($game['price']); ?></h3>

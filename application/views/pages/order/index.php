@@ -27,7 +27,7 @@
 						<th>Invoice</th>
 						<th>Date</th>
 						<th>Total</th>
-						<th>Status</th>
+						<th>Status Mcpayment</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -50,10 +50,66 @@
 								<?php endif; ?>
 							</td>
 						</tr>
+						<?php if($o['status'] == 'SUCCESS') { ?>
+							<?php if(isset($o['order_detail']) && count($o['order_detail']) > 0) { ?>
+								<tr>
+									<td colspan="4">
+										<table class="table table-bordered text-center" style="border: double;">
+											<?php foreach ($o['order_detail'] as $key_detail => $value_detail) { ?>
+												<?php if($value_detail['kategori'] != 1) { ?>
+													<?php
+													$get_detail_status_uniplay = $this->order->getOrderDetailUniplay($value_detail['id']);
+													if(count($get_detail_status_uniplay) > 0) {
+													?>
+														<tr style="border: double;"><th colspan="4">Uniplay Status <?=$value_detail['name'];?></th></tr>
+														<tr>
+															<th>Transaction Date</th>
+															<th>Transaction Number</th>
+															<?php if($value_detail['kategori'] == 3) { ?>
+																<th>Voucher Number</th>
+															<?php } ?>
+															<th>Status</th>
+															<!-- <th>Action</th> -->
+														</tr>
+														<tr>
+															<td><?=$get_detail_status_uniplay['trx_date'] != "" ? $get_detail_status_uniplay['trx_date'] : "---" ;?></td>
+															<td><?=$get_detail_status_uniplay['trx_number'];?></td>
+															<?php if($value_detail['kategori'] == 3) { ?>
+																<td><?=$get_detail_status_uniplay['code_voucher']?></td>
+															<?php } ?>
+															<td align="center">
+																<?php 
+																if($get_detail_status_uniplay['inquiry_id'] != NULL && $get_detail_status_uniplay['order_id'] == NULL) {
+																	echo "Transaction is being processed";
+																} else {
+																	if($get_detail_status_uniplay['status_uniplay'] == "done" || $get_detail_status_uniplay['status_uniplay'] == "payment_received") {
+																		echo "Transaction successful";
+																	} else {
+																		echo "Transaction failed";
+																	}
+																}
+																?>
+															</td>
+															<!-- <td> -->
+																<?php
+																// if($get_detail_status_uniplay['inquiry_id'] != NULL && $get_detail_status_uniplay['order_id'] == NULL) {
+																// 	echo "process manual";
+																// } 
+																?>
+															<!-- </td> -->
+														</tr>
+														<!-- <tr><td colspan="4">&nbsp;</td></tr> -->
+													<?php } ?>
+												<?php } ?>
+											<?php } ?>
+										</table>
+									</td>
+								</tr>
+							<?php } ?>
+						<?php } ?>
 					<?php endforeach ?>
 				</tbody>
 			</table>
 		</div>
 	</div>
-
 </div>
