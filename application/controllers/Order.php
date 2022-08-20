@@ -24,18 +24,18 @@ class Order extends CI_Controller {
 			$status = json_decode($status,true);
 			$order['status'] = $status['status'];
 
-			// if($order['status_mcpay'] != "SUCCESS") {
-			// 	$status = $this->detailOrder($order['transaction_id']);
-			// 	$status = json_decode($status,true);
-			// 	$order['status'] = $status['status'];
+			if($order['status_mcpay'] != "SUCCESS") {
+				$status = $this->detailOrder($order['transaction_id']);
+				$status = json_decode($status,true);
+				$order['status'] = $status['status'];
 
-			// 	if($status['status'] != 'REQUEST') { 
-			// 		$statusmcpay['status_mcpay'] = $status['status'];
-			// 		$this->order->updateStatusMCpay($order['id'], $statusmcpay);
-			// 	}
-			// } else {
-			// 	$order['status'] = $order['status_mcpay'];
-			// }
+				if($status['status'] != 'REQUEST') { 
+					$statusmcpay['status_mcpay'] = $status['status'];
+					$this->order->updateStatusMCpay($order['id'], $statusmcpay);
+				}
+			} else {
+				$order['status'] = $order['status_mcpay'];
+			}
 
 			$order['order_detail'] 	= $this->order->getOrderDetail($order['id']);
 			array_push($data['orders'],$order);

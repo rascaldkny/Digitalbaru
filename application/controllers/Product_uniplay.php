@@ -155,6 +155,20 @@ class Product_uniplay extends CI_Controller {
 	}
 
 	public function delete($id) {
+		## lakukan pengecekan jika barang sudah ada di cart dan order
+		$count_product_cart = $this->product->CheckProductCart(($id));
+		if($count_product_cart > 0) {
+			$this->session->set_flashdata('error', "The game can't be deleted because it's already in the cart");
+
+			redirect(base_url('product_uniplay'));
+		}
+
+		$count_product_order = $this->product->CheckProductOrder(($id));
+		if($count_product_order > 0) {
+			$this->session->set_flashdata('error', "The game can't be deleted because it's already in the order");
+
+			redirect(base_url('product_uniplay'));
+		}
 		$produk = $this->product->getProduct(($id));
 		unlink('images/game/' . $produk['image']);
 		$this->product->deleteProduct($id);

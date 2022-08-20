@@ -19,6 +19,17 @@ function is_admin()
 		redirect('errors');
 	}
 }
+	
+function is_admin_boolean()
+{
+	$CI =& get_instance();
+
+	is_login();
+	
+	if($CI->session->userdata('role') == 1){
+		return TRUE;
+	}
+}
 
 function hashEncrypt($input){
 

@@ -39,7 +39,9 @@
 									<td>
 										<?= date('F j Y H:i:s', strtotime($o['expired_time']));?>
 									</td>
-									<td><a href="<?= base_url('myorder/cancel/' . $o['id']) ?>" class="badge badge-danger" onclick="return confirm('Apakah yakin transaksi akan di batalkan ?')">Batalkan</a></td>
+									<td><?php if($o['status'] == 'REQUEST') : ?>
+										<a href="<?= base_url('myorder/cancel/' . $o['id']) ?>" class="badge badge-danger" onclick="return confirm('Apakah yakin transaksi akan di batalkan ?')">Batalkan</a>
+									<?php endif; ?></td>
 								</tr>
 							<?php endforeach ?>
 						</tbody>

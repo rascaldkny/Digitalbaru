@@ -16,7 +16,7 @@ class Cronjob extends CI_Controller {
     public function YWPQMRJENTDS() {
 		$this->load->library('uniplay');
 
-		// pengecekan ganti status mcpayment dari menunggu pembayaran
+		// pengecekan ganti status mcpayment dari menunggu pembayaran, ke success atau expired, atau cancel dll
 		$invoice = $this->order->getOrdersRequest();
 		if(count($invoice) > 0) {
 			foreach($invoice as $order) {
@@ -26,7 +26,7 @@ class Cronjob extends CI_Controller {
 				if($status['status'] != 'REQUEST') {
 					$statusmcpay['status_mcpay'] = $status['status'];
 					$this->order->updateStatusMCpay($order['id'], $statusmcpay);
-					echo "Order invoice number " . $order['invoice'] . " are success from mcpayment";
+					echo "Order invoice number " . $order['invoice'] . " are ".$statusmcpay['status_mcpay']." from mcpayment";
 					echo "<br>";
 				}
 			}
@@ -61,12 +61,12 @@ class Cronjob extends CI_Controller {
 								$this->db->insert('orders_detail_uniplay', array("order_detail_id" => $order_detail_id, "inquiry_id" => $set_payment_inquiry->inquiry_id));
 								$insert_id = $this->db->insert_id();
 
-								// $confirm_payment = $this->uniplay->confirm_payment($set_payment_inquiry->inquiry_id);
+								$confirm_payment = $this->uniplay->confirm_payment($set_payment_inquiry->inquiry_id);
 								
 								$voucher_code = "";
 								if(isset($confirm_payment->trx_resp_voucher_code)) {
-									$explode_voucher_code = explode(";", $confirm_payment->trx_resp_voucher_code);
-									$voucher_code = @$explode_voucher_code[0];
+									// $explode_voucher_code = explode(";", $confirm_payment->trx_resp_voucher_code);
+									$voucher_code = $confirm_payment->trx_resp_voucher_code;
 								}
 								$this->db->update('orders_detail_uniplay', array(
 										"order_id" => $confirm_payment->order_id, 

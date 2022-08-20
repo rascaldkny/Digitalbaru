@@ -20,7 +20,7 @@
 				<div class="">
 					<div class="text-info font-weight-bold">
 						<h6 class="badge badge-info badge-pill p-2 mt-3">Rp.<?= number_format($game['price']); ?></h6>
-						<form action="<?= base_url('cart/add') ?>" method="POST">
+						<form action="<?= base_url('cart/add') ?>" method="POST" id="FormAdd">
 							<input type="hidden" name="product_id" value="<?= $game['id'] ?>">
 							<button type="submit" class="btn btn-large btn-success btn-block badge badge-info badge-pill p-2 mt-5">ADD</button>
 						</form>
@@ -141,36 +141,57 @@
 	<?php } ?>
 	<!-- End of System requirements -->
 </div>
-<?php if ($game['kategori'] != 1) { ?>
-	<?php if (count($game['denom']) > 0) { ?>
-		<?php if (($game['kategori']) == 2) { ?>
-			<script type="text/javascript">
-				jQuery("#FormAdd").submit(function (evt) {
+		<script type="text/javascript">
+			jQuery("#FormAdd").submit(function (evt) {
+				// pengecekan jika admin tidak bisa add produk
+				<?php if(is_admin_boolean() == TRUE) { ?>
+					alert("Admin can't add product!");
+					return false;
+				<?php } ?>
 
-					if (jQuery("input[Name='player_id']").val() == "") {
-						alert("Field player id is required!");
-						evt.preventDefault();
-						return;
-					}
-					<?php if (($game['flag_server_id']) == 1) { ?>
-						if (jQuery("input[Name='server_id']").val() == "") {
-							alert("Field server id is required!");
-							evt.preventDefault();
-							return;
-						}
-						let confirmAction = confirm("Are you sure to add the game to the cart? make sure the player id and server id entered are correct.");
-						if (!confirmAction) {
-							return false;
-						}
+				<?php if ($game['kategori'] != 1) { ?>
+					<?php if (count($game['denom']) > 0) { ?>
+						<?php if (($game['kategori']) == 2) { ?>
+							// produk dtu
+							if (jQuery("input[Name='player_id']").val() == "") {
+								alert("Field player id is required!");
+								evt.preventDefault();
+								return;
+							}
 
-					<?php } else { ?>
-						let confirmAction = confirm("Are you sure to add the game to the cart? make sure the player id entered are correct.");
-						if (!confirmAction) {
-							return false;
-						}
+							<?php if (($game['flag_server_id']) == 1) { ?>
+								
+								if (jQuery("input[Name='server_id']").val() == "") {
+									alert("Field server id is required!");
+									evt.preventDefault();
+									return;
+								}
+								let confirmAction = confirm("Are you sure to add the game to the cart? make sure the player id and server id entered are correct.");
+								if (!confirmAction) {
+									return false;
+								}
+
+							<?php } else { ?>
+								
+								let confirmAction = confirm("Are you sure to add the game to the cart? make sure the player id entered are correct.");
+								if (!confirmAction) {
+									return false;
+								}
+							<?php } ?>
+						<?php } else { ?>
+							// produk voucher
+							let confirmAction = confirm("Are you sure to add the game to the cart?");
+							if (!confirmAction) {
+								return false;
+							}
+						<?php } ?>
 					<?php } ?>
-				});
-			</script>
-		<?php } ?>
-	<?php } ?>
-	<?php } ?>
+				<?php } else { ?>
+					// produk installer
+					let confirmAction = confirm("Are you sure to add the game to the cart?");
+					if (!confirmAction) {
+						return false;
+					}
+				<?php } ?>
+			});
+		</script>

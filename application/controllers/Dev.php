@@ -23,27 +23,32 @@ class Dev extends CI_Controller {
     	// $set_payment_voucher = $this->uniplay->inquiry_payment_voucher($game_id, $denom_id);
     	// print_r($set_payment_voucher);
 
-    	$get_dtu = $this->uniplay->inquiry_dtu();
+    	// $get_dtu = $this->uniplay->inquiry_dtu();
     	// print_rr($get_dtu);
 
-    	$game_id = $get_dtu['list_product'][0]['id'];
-    	// $game_id = "NGwralhtNnJWdXd0b0E5bXRVZWRzeWxtbkV3Y2JGeEo3VEtHMFNKVmdoLy8zd1plU0Y1dFR5NGIrVlVwa241SlpTcjVDZG0wT2VaMG1xZXRNNXlkcnc9PQ==";
-    	$denom_id = $get_dtu['list_product'][0]['denom'][0]['id'];
-    	// $denom_id = "aUk5SHhDSmRUZjNjTmQveGlmUWhYZExEL0tCZVQ2L05jMkFSc3VTUENQUSttK25mR1ROWE5ELzNsMmdJRlBVQmROaWV1aTEzdnRQVXJrSHpqNzMra2c9PQ==";
-    	$set_payment_dtu = $this->uniplay->inquiry_payment_dtu($game_id, $denom_id, "test");
-		print_r($set_payment_dtu);
+  //   	// $game_id = $get_dtu['list_product'][0]['id'];
+  //   	$game_id = "NGwralhtNnJWdXd0b0E5bXRVZWRzeWxtbkV3Y2JGeEo3VEtHMFNKVmdoLy8zd1plU0Y1dFR5NGIrVlVwa241SlpTcjVDZG0wT2VaMG1xZXRNNXlkcnc9PQ==";
+  //   	// $denom_id = $get_dtu['list_product'][0]['denom'][0]['id'];
+  //   	$denom_id = "Q28yVkJNbXpPbkJOM0J2YXc5azJxMzY0WVNYR3RXS1VMc0h4eDJrTk93ZzBwZU1JSTdhRmFjMU5oUDFDUXc0Tll2YmNkNjJ4L2NJZDF0a0lMTVFrNVE9PQ==";
+  //   	$set_payment_dtu = $this->uniplay->inquiry_payment_dtu($game_id, $denom_id, "test");
+		// print_r($set_payment_dtu);
 
-		$inquiry_id = $set_payment_dtu->inquiry_id;
-		$confirm_payment = $this->uniplay->confirm_payment($inquiry_id);
-		print_r($confirm_payment);
+		// $inquiry_id = $set_payment_dtu->inquiry_id;
+		// $confirm_payment = $this->uniplay->confirm_payment($inquiry_id);
+		// print_r($confirm_payment);
 
-		$order_id = $confirm_payment->order_id;
+		// $order_id = $confirm_payment->order_id;
+		$order_id = "cmMxRXd3dktPeC9yYnZ1MW9FSWRDeEZHYXBTWkhua1JTbVlKRVdwZitwMkdzZG14NUpjK2tEQWt6RmxFZk1XMUdIaEtXeHlxdkNZaWV4L1dGS3dlNVE9PQ==";
 		$check_order = $this->uniplay->check_order($order_id);
 		print_r($check_order);
 
 		// trx_resp_voucher_code
 
     }
+
+	public function inquiry_payment() {
+		
+	}
 
 
 }

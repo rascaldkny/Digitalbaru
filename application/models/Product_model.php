@@ -13,8 +13,16 @@ class Product_model extends CI_Model {
 		return $this->db->get_where('products', ['id' => $id])->row_array();
 	}
 
+	public function CheckProductCart($id) {
+		return $this->db->get_where('cart', ['product_id' => $id])->num_rows();
+	}
+
+	public function CheckProductOrder($id) {
+		return $this->db->get_where('orders_detail', ['product_id' => $id])->num_rows();
+	}
+
 	public function getProductDenom($id) {
-		return $this->db->get_where('product_denoms', ['product_id' => $id])->result_array();
+		return $this->db->order_by('price_reseller', 'ASC')->get_where('product_denoms', ['product_id' => $id])->result_array();
 	}
 
 	public function CheckProductUniplayPublish($slug) {

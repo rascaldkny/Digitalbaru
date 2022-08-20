@@ -23,11 +23,8 @@ class Myorder extends CI_Controller {
 			$status = $this->detailOrder($order['transaction_id']);
 			$status = json_decode($status, true);
 			$order['status'] = $status['status'];
-			// array_merge($order,['wdsd'=> $status['status']]);
 			array_push($data['orders'],$order);
 		}
-		// $data['orders'] = $order;
-		// dd($data);
 		$this->load->view('layouts/app', $data);
 	}
 
