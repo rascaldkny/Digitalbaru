@@ -57,7 +57,11 @@
 												if($get_detail_status_uniplay['status_uniplay'] == "done" || $get_detail_status_uniplay['status_uniplay'] == "payment_received") {
 													echo "Transaction successful";
 												} else {
-													echo "Transaction failed";
+													if($detailTransaksi['status'] == 'REQUEST') {
+														echo "Transaction hold";
+													} else {
+														echo "Transaction failed";
+													}
 												}
 											}
 										} else {
